@@ -14,6 +14,7 @@ function createServerSettingsModel(collectionName) {
     ANALYZER: String,
     USECOWSNF: String,
     USEBUFSNF: String,
+    CLRBASEDTABLE:String,
     HIGHFATACCEPT: String,
     LOWFATACCEPT: String,
     MEMBERLISTCONTROL: String,
