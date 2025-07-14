@@ -86,6 +86,18 @@ async function saveRecords(data, socket) {
       const collectionName = `records`; // You can generate this dynamically
       const Record = getRecordModel(collectionName);
 
+      // Duplicate check for RECORDTYPE 'E'
+      if (recordType === 'E') {
+        const duplicates = await Record.find({ SAMPLEDATE: sampleDate, SAMPLETIME: sampleTime, CODE: code });
+        if (duplicates.length > 0) {
+          // Find the latest record by _id (regardless of RECORDTYPE)
+          const latestRecord = duplicates.reduce((latest, rec) => rec._id > latest._id ? rec : latest, duplicates[0]);
+          latestRecord.RECORDTYPE = 'D';
+          await latestRecord.save();
+          console.log(`Duplicate record(s) found for SAMPLEDATE: ${sampleDate}, SAMPLETIME: ${sampleTime}, CODE: ${code}. Changed latest record's RECORDTYPE to 'D' and saving new record.`);
+        }
+      }
+
       const newRecord = new Record({
         DEVICEID: dpuId,
         CODE: code,
