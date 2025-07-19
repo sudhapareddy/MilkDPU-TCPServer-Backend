@@ -160,11 +160,13 @@ const server = net.createServer((socket) => {
 
         case `#SCTSNFBUFEND`:
         case `#SCTSNFCOWEND`:
+          console.log("Sudha",deviceState.clrBasedTable)
+
           return socket.write(
             `#${command.slice(1)}:${socket.deviceId}${
               command.includes("BUF")
-                ? deviceState.snfBufId
-                : deviceState.snfCowId
+                ? deviceState.clrBasedTable === 'Y' ? deviceState.clrBufId : deviceState.snfBufId
+                : deviceState.clrBasedTable === 'Y' ? deviceState.clrCowId : deviceState.snfCowId
             }!`
           );
 

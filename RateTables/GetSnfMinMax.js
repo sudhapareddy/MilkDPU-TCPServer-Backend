@@ -1,29 +1,6 @@
 async function getMinMaxFatSnf(snfTable, socket, deviceState) {
   try {
-    //let snfTable;
-
-    // milkTable === "SNFBUF"
-    //   ? deviceState.deviceInfo.snfBufTable
-    //   : deviceState.deviceInfo.snfCowTable;
-
-    // if (milkTable === "SNFBUF") {
-    //   if (deviceState.deviceInfo.isDeviceRateTable.snfBufTable === true) {
-    //     snfTable = deviceState.deviceInfo.snfBufTable;
-    //     console.log("Device snf Buf Table");
-    //   } else {
-    //     snfTable = deviceState.dairyInfo.snfBufTable;
-    //     console.log("Dairy snf Buf Table");
-    //   }
-    // } else if (milkTable === "SNFCOW") {
-    //   if (deviceState.deviceInfo.isDeviceRateTable.snfCowTable === true) {
-    //     snfTable = deviceState.deviceInfo.snfCowTable;
-    //     console.log("Device snf Cow Table");
-    //   } else {
-    //     snfTable = deviceState.dairyInfo.snfCowTable;
-    //     console.log("Dairy snf Cow Table");
-    //   }
-    // }
-
+    
     if (
       !snfTable ||
       typeof snfTable !== "object" ||

@@ -4,32 +4,38 @@ async function sendSnfLimits(command, message, socket, deviceState) {
   const isBuf = command.includes("BUF");
   const milkType = isBuf ? "SNFBUF" : "SNFCOW";
 
-  let snfTable, rateTableId, snfEffectiveDate;
+  let deviceTable,snfTable, rateTableId, snfEffectiveDate;
+
+  let CLRBASEDTABLE = deviceState.deviceInfo.serverSettings.clrBasedTable;
+  console.log("clr",CLRBASEDTABLE)
 
   if (milkType === "SNFBUF") {
-    if (deviceState.deviceInfo.isDeviceRateTable.snfBufTable === true) {
-      snfTable = deviceState.deviceInfo.snfBufTable;
-      console.log("Device snf Buf Table");
+    deviceTable = CLRBASEDTABLE === 'Y' ? deviceState.deviceInfo.isDeviceRateTable.clrBufTable : deviceState.deviceInfo.isDeviceRateTable.snfBufTable;
+    if (deviceTable === true) {
+      snfTable = CLRBASEDTABLE === 'Y' ? deviceState.deviceInfo.clrBufTable : deviceState.deviceInfo.snfBufTable;
+      console.log(`Device ${CLRBASEDTABLE === 'Y' ? "clr" : "snf"} Buf Table`);
     } else {
-      snfTable = deviceState.dairyInfo.snfBufTable;
-      console.log("Dairy Snf Buf Table");
+      snfTable = CLRBASEDTABLE === 'Y' ? deviceState.dairyInfo.clrBufTable : deviceState.dairyInfo.snfBufTable;
+      console.log(`Dairy ${CLRBASEDTABLE === 'Y' ? "clr" : "snf"} Buf Table`);
     }
 
-    rateTableId = deviceState.deviceInfo.rateChartIds?.snfBufId;
-    snfEffectiveDate =
+    rateTableId = CLRBASEDTABLE === 'Y' ? deviceState.deviceInfo.rateChartIds?.clrBufId : deviceState.deviceInfo.rateChartIds?.snfBufId;
+    snfEffectiveDate = CLRBASEDTABLE === 'Y' ? deviceState.deviceInfo.effectiveDates?.clrBufEffectiveDate :
       deviceState.deviceInfo.effectiveDates?.snfBufEffectiveDate;
   } else if (milkType === "SNFCOW") {
-    if (deviceState.deviceInfo.isDeviceRateTable.snfCowTable === true) {
-      snfTable = deviceState.deviceInfo.snfCowTable;
-      console.log("Device Snf Cow Table");
+    deviceTable = CLRBASEDTABLE === 'Y' ? deviceState.deviceInfo.isDeviceRateTable.clrCowTable : deviceState.deviceInfo.isDeviceRateTable.snfCowTable;
+    if (deviceTable === true) {
+      snfTable = CLRBASEDTABLE === 'Y' ? deviceState.deviceInfo.clrCowTable : deviceState.deviceInfo.snfCowTable;
+      console.log(`Device ${CLRBASEDTABLE === 'Y' ? "clr" : "snf"} Cow Table`);
     } else {
-      snfTable = deviceState.dairyInfo.snfCowTable;
-      console.log("Dairy Snf Cow Table");
+      snfTable = CLRBASEDTABLE === 'Y' ?  deviceState.dairyInfo.clrCowTable : deviceState.dairyInfo.snfCowTable;
+      console.log(`Dairy ${CLRBASEDTABLE === 'Y' ? "clr" : "snf"} Cow Table`);
     }
 
-    rateTableId = deviceState.deviceInfo.rateChartIds?.snfCowId;
-    snfEffectiveDate =
-      deviceState.deviceInfo.effectiveDates?.snfCowEffectiveDate;
+    rateTableId = CLRBASEDTABLE === 'Y' ? deviceState.deviceInfo.rateChartIds?.clrCowId : deviceState.deviceInfo.rateChartIds?.snfCowId;
+    snfEffectiveDate = CLRBASEDTABLE === 'Y' 
+                      ? deviceState.deviceInfo.effectiveDates?.clrCowEffectiveDate
+                      : deviceState.deviceInfo.effectiveDates?.snfCowEffectiveDate;
   }
 
   if (message === `${command}:${socket.deviceId}${rateTableId}!`) {
